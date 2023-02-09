@@ -1,0 +1,1 @@
+ALTER TABLE [YourTableHere] ADD CONSTRAINT [start_date_less_than_end_date] CHECK (EndDate is null or BeginDate <= EndDate)
