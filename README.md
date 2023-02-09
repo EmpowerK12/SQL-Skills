@@ -2,6 +2,7 @@
 A repository for sample SQL code everyone can learn from!
 
 # Table of Contents
+This is just a manually created table of contents for easy viewing.  However, it may not be fully up to date.  For a complete, auto-generated ToC use the GitHub ToC in the top left corner of this frame.  If you can't find it, here is [info about it](https://github.blog/changelog/2021-04-13-table-of-contents-support-in-markdown-files/).
 
 - [Introduction](#introduction)
 - [Uniqueness](#uniqueness)
