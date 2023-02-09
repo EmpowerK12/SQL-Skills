@@ -45,10 +45,10 @@ Understanding uniqueness is the most important part of SQL coding and yet it is 
 
 **Every SQL user needs to have a very strong ability to look at a table and understand which columns naturally make a composite key.**  For example, when looking at a table of assessment data, are you able to figure out which set of columns should logically make every row unique? HINT: You shouldn't start by looking at the data, which can throw you off.  You should think about what we *want* to make each row unique. (can someone else better explain this skill???)
 
-| Year | Season | Student ID | Subject | Scale Score | Percentile | ... |
+| Year | Season | Subject | Student ID | Scale Score | Percentile | ... |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2023 | Fall | 1 | Math | 200 | 75 |  |
-| 2023 | Fall | 2 | Math | 190 | 74 |  |
+| 2023 | Fall | Math | 1 | 200 | 75 |  |
+| 2023 | Fall | Math | 2 | 190 | 74 |  |
 
 If you don't quickly see that Year, Season, Student ID, and Subject are the logical composite key, then you should practice this skill more.  
 
@@ -90,7 +90,7 @@ Making code modular reduces errors and improves readability and usability.  Two 
  2. Unique
  3. Primary Key
  4. Foreign Key
- 5. Check
+ 5. Check (see example code)
  6. Default
  7. Create Index
 
@@ -102,8 +102,19 @@ Making code modular reduces errors and improves readability and usability.  Two 
 
 # Common Dangers
 ## Removing Nulls with `not in` or `<>`
+See code
+
 ## DateDiff
 If you use datediff to compare years, it will literally subtract the years.  So 1/1/2023 is one year different from 12/31/2022.
+
+## Union Combined with Union All
+If you use union and union all in the same query, watch out for how distinct works.  There is sample code to investigate the functionality.
+
+## Nulls in Calculations
+Make sure you know how nulls affect calculations. There is test code to look at.
+
+## Row_number with distinct
+Distinct won't work if you use row_number first.  Row_number evaluates BEFORE distinct.
 
 ```SQL
 declare @endDate date = '1/1/2023'
@@ -138,6 +149,59 @@ select (CONVERT(decimal(12,4),CONVERT(char(8),@testDate,112))-CONVERT(char(8),GE
 
 ```
 ## Time Zones
+See sample code.
+
 ## Case Sensitive Compare
+See sample code.
+
 ## Sound Comparison - SoundEx
+See sample code.
+
 ## Computed Columns
+It can be handy to turn a composite key into a single column key.  For example, for an assessment table, you may want a SchoolYear, AssessmentPeriod, AcademicSubject, USI as a composite key.  But it is annoying to join on all those columns, so you can make an AssessmentStudentID computed column.
+
+```SQL
+CREATE TABLE [dbo].[AssessmentStudent](
+	[USI] [bigint] NOT NULL,
+	[SchoolYear] [int] NOT NULL,
+	[AssessmentPeriod] [varchar](10) NOT NULL,
+	[AcademicSubject] [varchar](100) NOT NULL,
+	[ScoreResult] [int] NULL,
+	[Percentile] [int] NULL,
+	[AssessmentStudentID]  AS CONVERT([varchar](10),[USI])+'_'+CONVERT([varchar](10),[SchoolYear])+'_'+[AssessmentPeriod] +'_'+ [AcademicSubject], --this is the same data as the Primary Key, and can be used in joins
+ CONSTRAINT [PK__AssessmentStudent] PRIMARY KEY CLUSTERED 
+(
+	[USI] ASC,
+	[SchoolYear] ASC,
+	[AssessmentPeriod] ASC,
+	[AcademicSubject] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[AssessmentObjectiveStudent](
+	[USI] [bigint] NOT NULL,
+	[SchoolYear] [int] NOT NULL,
+	[AssessmentPeriod] [varchar](10) NOT NULL,
+	[AcademicSubject] [varchar](100) NOT NULL,
+	[Objective] [varchar](20) NOT NULL,
+	[ScoreResult] [int] NULL,
+	[Percentile] [int] NULL,
+	[AssessmentStudentID]  AS CONVERT([varchar](10),[USI])+'_'+CONVERT([varchar](10),[SchoolYear])+'_'+[AssessmentPeriod] +'_'+ [AcademicSubject], --this is the same data as the Primary Key from AssessmentStudent, and can be used in joins
+ CONSTRAINT [PK__AssessmentObjectiveStudent] PRIMARY KEY CLUSTERED 
+(
+	[USI] ASC,
+	[SchoolYear] ASC,
+	[AssessmentPeriod] ASC,
+	[AcademicSubject] ASC,
+	[Objective] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+SELECT *
+FROM AssessmentObjectiveStudent aos
+JOIN AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simple join!  :)
+```
