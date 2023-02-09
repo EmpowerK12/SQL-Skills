@@ -158,7 +158,7 @@ See sample code.
 See sample code.
 
 ## Computed Columns
-It can be handy to turn a composite key into a single column key.  For example, for an assessment table, you may want a Year, Season, Subject, Student as a composite key.  But it is annoying to join on all those columns, so you can make an AssessmentStudentID computed column.
+It can be handy to turn a composite key into a single column key.  For example, for an assessment table, you may want a SchoolYear, AssessmentPeriod, AcademicSubject, USI as a composite key.  But it is annoying to join on all those columns, so you can make an AssessmentStudentID computed column.
 
 ```SQL
 CREATE TABLE [dbo].[AssessmentStudent](
@@ -203,5 +203,5 @@ GO
 
 SELECT *
 FROM AssessmentObjectiveStudent aos
-join AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simple join!  :)
+JOIN AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simple join!  :)
 ```
