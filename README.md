@@ -1,5 +1,5 @@
 # SQL-Skills
-A repository for sample SQL code everyone can learn from!
+A repository for sample SQL code everyone can learn from!  This was made for the [DC Education Data Club](https://sites.google.com/view/dcedc/home)
 
 # Table of Contents
 This is just a manually created table of contents for easy viewing.  However, it may not be fully up to date.  For a complete, auto-generated ToC use the GitHub ToC in the top left corner of this frame.  If you can't find it, here is [info about it](https://github.blog/changelog/2021-04-13-table-of-contents-support-in-markdown-files/).
@@ -50,7 +50,7 @@ Understanding uniqueness is the most important part of SQL coding and yet it is 
 | 2023 | Fall | Math | 1 | 200 | 75 |  |
 | 2023 | Fall | Math | 2 | 190 | 74 |  |
 
-If you don't quickly see that Year, Season, Student ID, and Subject are the logical composite key, then you should practice this skill more.  
+If you are not able to look at the column names, think for a little bit, and figure out that Year, Season, Student ID, and Subject are the logical composite key, then you should practice this skill more.  
 
 **Primary keys** and **foreign keys** are tools we create to make understanding uniqueness easier and faster, but they shouldn't be a crutch if you don't have the skill above - understanding what should logically make a table unique.  We're not going to get into PKs and FKs here since they are effectively intro SQL ideas.
 
@@ -72,18 +72,22 @@ The two most common ways to force unqiueness are...
 I'm not going to explain how to use them here, but someone should feel free to add that. If you are reading this doc you should already know how to use group by.  You can find resources on how to create row numbers that reset for a set of columns (partition by) that you want to force uniqueness on.  Then you just pick the row where row_number (aliased frequently as rn) = 1.
 
 # Joins In Depth
- - Cross join (aka joining on 1=1)
+To better understand joins and be able to do more sophisticated joins (like creating multiple rows intentionally), I find it helpful to think of all joins a cross join (aka joining on 1=1) and then filtering down using the ON clause.  Do others think of their complicated joins in this way?
 
 # Modularity
 Making code modular reduces errors and improves readability and usability.  Two common ways we do that is by creating **views** and **temp tables**.  We also use **variables** so that you don't need to change strings all over your file when you update it.  We're not going to cover the basics of making views and temp tables here, but we'll mention some helpful things to know about them.
 
 ## Views
+	1. If you have a slow view, try to create views that join on primary keys only to speed it up
+	2. If you want to speed things up, try making a view to keep things consistent but then storing it as a temp table at the beginning of your stored procedure
+	3. You can create index of base views, but for me (Kenli), I didn't see much performance improvement
 
 ## Temp Tables
   1. Helpful code to drop your temp tables: `drop table if exists #yourTempTable`
-  2. sldjfslkd
+  2. Sorry, they don't have temp tables in Oracle last I checked.  Maybe they have materialized views?
   
 ## Variables
+Use them.
 
 # Constraints
  1. Not null
@@ -98,7 +102,7 @@ Making code modular reduces errors and improves readability and usability.  Two 
  - Aggregate over(partition by…. Order by…)
  - Lag()/Lead()
  - Running totals
- - rows unbounded preceding
+ - Rows unbounded preceding
 
 # Common Dangers
 ## Removing Nulls with `not in` or `<>`
@@ -106,6 +110,13 @@ See code
 
 ## DateDiff
 If you use datediff to compare years, it will literally subtract the years.  So 1/1/2023 is one year different from 12/31/2022.
+
+```SQL
+declare @endDate date = '1/1/2023'
+declare @startDate date = '12/31/2022'
+
+select datediff(year,@startDate,@endDate) as [YearDiffWrong]
+```
 
 ## Union Combined with Union All
 If you use union and union all in the same query, watch out for how distinct works.  There is sample code to investigate the functionality.
@@ -116,29 +127,53 @@ Make sure you know how nulls affect calculations. There is test code to look at.
 ## Row_number with distinct
 Distinct won't work if you use row_number first.  Row_number evaluates BEFORE distinct.
 
-```SQL
-declare @endDate date = '1/1/2023'
-declare @startDate date = '12/31/2022'
 
-select datediff(year,@startDate,@endDate) as [YearDiffWrong]
-```
 # Pivot
 I still don't really understand how to do this, so I'm not explaining it here, but it is very helpful and it deserves a place on this checklist.
 
 # Insert Update
 ## Where Not Exists
+It is helpful to learn `WHERE NOT EXISTS`.  It's not much different from using a left join, but it feels more readable.  Same thing with `WHERE EXISTS`.
 
 # Helpful Functions
-## String_Agg
-## String_Split
-## Coalesce
-## Except
+## String_Agg()
+Aggregates strings from multiple rows and puts a delimiter in between.
+
+## String_Split()
+Opposite of String_Agg()
+
+## Coalesce()
+Look this up immediately if you don't know what it is.
+
+## EXCEPT
+Useful to compare the results from before and after a script. Store your target table (e.g. target) in a temp table (e.g. #temp) before your operations and then compare using EXCEPT.  Compare in both directions.
+
+```SQL
+--shows everything in your starting table that is no longer there after the edits
+SELECT * FROM #temp 
+EXCEPT
+SELECT * FROM target
+
+--shows everything in your final table that wasn't in your starting table
+SELECT * FROM target 
+EXCEPT
+SELECT * FROM #temp
+```
 
 
 # System Tables
 
 # Random Things
 ## 1=1
+Used to make commenting out lines of a WHERE or ON clause easier.  You HAVE to use it with and, not OR unless you want to get every result back!
+```SQL
+...
+WHERE 1=1
+	--and studentID = 1005 --you can comment out the first line without having to remove the and
+	and calendarID is not null
+	and schoolyear=2015
+```
+
 ## Age
 To calculate age you need to use this funny formula because of the problems with datediff mentioned above.
 ```SQL
@@ -205,3 +240,6 @@ SELECT *
 FROM AssessmentObjectiveStudent aos
 JOIN AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simple join!  :)
 ```
+
+## Execution Plans
+Have folks have success using the execution plan to figure out how to speed up a slow query?
