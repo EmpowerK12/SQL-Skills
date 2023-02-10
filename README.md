@@ -7,7 +7,7 @@ This is just a manually created table of contents for easy viewing.  However, it
 - [Introduction](#introduction)
 - [Uniqueness](#uniqueness)
 - [Joins In Depth](#joins-in-depth)
-- [Modularity](#modularity)
+- [Code Quality and Modularity](#code-quality-and-modularity)
 - [Constraints](#constraints)
 - [Window Functions](#window-functions)
 - [Common Dangers](#common-dangers)
@@ -74,8 +74,11 @@ I'm not going to explain how to use them here, but someone should feel free to a
 # Joins In Depth
 To better understand joins and be able to do more sophisticated joins (like creating multiple rows intentionally), I find it helpful to think of all joins a cross join (aka joining on 1=1) and then filtering down using the ON clause.  Do others think of their complicated joins in this way?
 
-# Modularity
+# Code Quality and Modularity
 Making code modular reduces errors and improves readability and usability.  Two common ways we do that is by creating **views** and **temp tables**.  We also use **variables** so that you don't need to change strings all over your file when you update it.  We're not going to cover the basics of making views and temp tables here, but we'll mention some helpful things to know about them.
+
+## Backwards Planning and Pseudo Code
+Start with your goal in mind.  You should know the structure of your end tables, especially the uniqueness/effective keys of the tables.  Then work back from there writing in pseudo code to think through all the tables that will go into your analysis and how you should force uniqueness at each step.  They comment all your joins as mentioned above.
 
 ## Views
 	1. If you have a slow view, try to create views that join on primary keys only to speed it up
@@ -88,6 +91,13 @@ Making code modular reduces errors and improves readability and usability.  Two 
   
 ## Variables
 Use them.
+
+## Formatting
+1. Yes, really use tabs to format. Try to be consistent
+2. Has anyone had success with automatic online SQL formatters?
+3. Use `/***********************************/ break up your code and make larger comment blocks clear
+
+Do you have any formatting tips to add?
 
 # Constraints
  1. Not null
@@ -246,6 +256,10 @@ JOIN AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simp
 
 ## Execution Plans
 Have folks have success using the execution plan to figure out how to speed up a slow query?
+
+## ALT+click+drag = long cursur
+Hold down alt and then click and drag to see some cool editing abilities!
+![alt click drag example](https://www.google.com/url?sa=i&url=https%3A%2F%2Fgfycat.com%2Ftangiblewelloffiriomotecat&psig=AOvVaw3EpCVnkq7PlCLY9Z9OSU6h&ust=1676133929539000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCOCuhMyzi_0CFQAAAAAdAAAAABAE)
 
 # Disclaimer
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
