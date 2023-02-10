@@ -132,6 +132,8 @@ Distinct won't work if you use row_number first.  Row_number evaluates BEFORE di
 I still don't really understand how to do this, so I'm not explaining it here, but it is very helpful and it deserves a place on this checklist.
 
 # Insert Update
+See sample code.
+
 ## Where Not Exists
 It is helpful to learn `WHERE NOT EXISTS`.  It's not much different from using a left join, but it feels more readable.  Same thing with `WHERE EXISTS`.
 
