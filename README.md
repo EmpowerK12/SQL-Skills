@@ -1,5 +1,5 @@
 # SQL-Skills
-A repository for sample SQL code everyone can learn from!  This was made for the [DC Education Data Club](https://sites.google.com/view/dcedc/home)
+A repository for sample SQL code everyone can learn from!  This was made for the [DC Education Data Club](https://sites.google.com/view/dcedc/home).  See [disclaimer](#disclaimer) at the bottom of this doc.
 
 # Table of Contents
 This is just a manually created table of contents for easy viewing.  However, it may not be fully up to date.  For a complete, auto-generated ToC use the GitHub ToC in the top left corner of this frame.  If you can't find it, here is [info about it](https://github.blog/changelog/2021-04-13-table-of-contents-support-in-markdown-files/).
@@ -243,3 +243,6 @@ JOIN AssessmentStudent a on a.AssessmentStudentID=aos.AssessmentStudentID --simp
 
 ## Execution Plans
 Have folks have success using the execution plan to figure out how to speed up a slow query?
+
+# Disclaimer
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
