@@ -99,6 +99,7 @@ Use them.
  7. Create Index
 
 # Window Functions
+[Helpful tutorial](https://mode.com/sql-tutorial/sql-window-functions/#the-usual-suspects-sum-count-and-avg)
  - Aggregate over(partition by…. Order by…)
  - Lag()/Lead()
  - Running totals
