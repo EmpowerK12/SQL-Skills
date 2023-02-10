@@ -259,6 +259,7 @@ Have folks have success using the execution plan to figure out how to speed up a
 
 ## ALT+click+drag = long cursur
 Hold down alt and then click and drag to see some cool editing abilities!
+
 ![alt click drag example](https://user-images.githubusercontent.com/1110966/27159725-8601413a-512c-11e7-85d6-fdb082e53e2c.gif)
 
 # Disclaimer
