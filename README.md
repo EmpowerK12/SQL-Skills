@@ -30,6 +30,7 @@ This is just a manually created table of contents for easy viewing.  However, it
  - Insert
  - Update
  - Like
+ - Case When
  - Googling to figure stuff out
 
 **This is also not a comprehensive resource for intermediate and advanced SQL.**  It is mostly a checklist of important skills and topics and some resources to go along with it.  It is created by our community as we think of skills that would be helpful for everyone to learn.  
