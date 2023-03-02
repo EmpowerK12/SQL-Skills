@@ -120,16 +120,18 @@ Start with your goal in mind.  You should know the structure of your end tables,
     b. Write each column, command, or table on a new line. This makes it easy to read and comment out unused pieces.
     c. Use indentation to help the eye find new sections.
 5. Example:
+```
 SELECT column1
      , column2
-FROM table1
+FROM Table1
 WHERE column3 IN
 (
     SELECT TOP(1) column4
-    FROM table2
-    INNER JOIN table3
-    ON table2.column1 = table3.column1
+    FROM Table2
+    INNER JOIN Table3
+    ON Table2.column1 = Table3.column1
 )
+```
 6. I found this article helpful: https://solutioncenter.apexsql.com/sql-formatting-standards-capitalization-indentation-comments-parenthesis/
 
 Do you have any formatting tips to add?
