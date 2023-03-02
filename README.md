@@ -82,19 +82,19 @@ Making code modular reduces errors and improves readability and usability.  Two 
 Start with your goal in mind.  You should know the structure of your end tables, especially the uniqueness/effective keys of the tables.  Then work back from there writing in pseudo code to think through all the tables that will go into your analysis and how you should force uniqueness at each step.  They comment all your joins as mentioned above.
 
 ## Views
-	1. If you have a slow view, try to create views that join on primary keys only to speed it up
-	2. If you want to speed things up, try making a view to keep things consistent but then storing it as a temp table at the beginning of your stored procedure
-	3. You can create index of base views, but for me (Kenli), I didn't see much performance improvement
-	4. Here are some of the views that E.L. Haynes uses all the time. By maintaining the code for each of these views, we can quickly pull together the information we need.
-	    a. v_Student (Lists all demographic and enrollment information for each student for each time they're enrolled. Unique on studentID-calendarID).
-	    b. v_Staff (Lists all staff members demographic and employment information. Unique on staffID-schoolID).
-	    c. v_AssessmentsWide (Lists test scores for each student for each year. Unique on studentID-calendarID).
-	    d. v_Contact (Lists student contact information. Unique on studentID-calendarID)
-	    e. v_DailyAttendance (Lists attendance data for each student for each day they are enrolled. Unique on studentID-Date)
-	    f. v_AttendanceTotals (Lists attendance rate and total absences for each student for each year. Unique on studentID-calendarID)
-	    g. v_Section (Lists section and course information. Unique on sectionID)
-	    h. v_Grades (Lists percent and score for each student for each of their classes. Unique on studentID-sectionID-termID-taskID)
-	    i. v_Roster (lists which students are enrolled in which sections. Unique on personID-sectionID)
+1. If you have a slow view, try to create views that join on primary keys only to speed it up
+2. If you want to speed things up, try making a view to keep things consistent but then storing it as a temp table at the beginning of your stored procedure
+3. You can create index of base views, but for me (Kenli), I didn't see much performance improvement
+4. Here are some of the views that E.L. Haynes uses all the time. By maintaining the code for each of these views, we can quickly pull together the information we need.
+    1. v_Student (Lists all demographic and enrollment information for each student for each time they're enrolled. Unique on studentID-calendarID).
+    2. v_Staff (Lists all staff members demographic and employment information. Unique on staffID-schoolID).
+    3. v_AssessmentsWide (Lists test scores for each student for each year. Unique on studentID-calendarID).
+    4. v_Contact (Lists student contact information. Unique on studentID-calendarID)
+    5. v_DailyAttendance (Lists attendance data for each student for each day they are enrolled. Unique on studentID-Date)
+    6. v_AttendanceTotals (Lists attendance rate and total absences for each student for each year. Unique on studentID-calendarID)
+    7. v_Section (Lists section and course information. Unique on sectionID)
+    8. v_Grades (Lists percent and score for each student for each of their classes. Unique on studentID-sectionID-termID-taskID)
+    9. v_Roster (lists which students are enrolled in which sections. Unique on personID-sectionID)
 	    
 
 ## Temp Tables
@@ -114,7 +114,7 @@ Start with your goal in mind.  You should know the structure of your end tables,
 ## Formatting
 1. Yes, really use tabs to format. Try to be consistent
 2. Has anyone had success with automatic online SQL formatters?
-3. Use `/***********************************/ break up your code and make larger comment blocks clear
+3. Use `/***********************************/` break up your code and make larger comment blocks clear
 4. I'm sure every coder has their own preferences, but here are Stu's formatting recommendations:
     a. Capitalization: Commands and keywords are all caps (SELECT), tables are capitalized (Student), columns are lowercase (personID). 
     b. Write each column, command, or table on a new line. This makes it easy to read and comment out unused pieces.
