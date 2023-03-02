@@ -242,6 +242,12 @@ See sample code.
 ## Sound Comparison - SoundEx
 See sample code.
 
+## TRY_CAST()
+If you are troubleshooting and need to figure out where a cast is going wrong you can cast and [try_cast()](https://learn.microsoft.com/en-us/sql/t-sql/functions/try-cast-transact-sql?view=sql-server-ver16) and compare the results.  
+
+## CONCAT_WS()
+This is a [handy function](https://learn.microsoft.com/en-us/sql/t-sql/functions/concat-ws-transact-sql?view=sql-server-ver16) that will add the same string in between concatenated strings. If you are making a composite key, this is super handy.  e.g. `SELECT CONCAT_WS('_',assessment,schoolyear,season,subject,studentid) FROM ASSESSMENT`
+
 ## Computed Columns
 It can be handy to turn a composite key into a single column key.  For example, for an assessment table, you may want a SchoolYear, AssessmentPeriod, AcademicSubject, USI as a composite key.  But it is annoying to join on all those columns, so you can make an AssessmentStudentID computed column.
 
