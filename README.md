@@ -76,7 +76,46 @@ I'm not going to explain how to use them here, but someone should feel free to a
 To better understand joins and be able to do more sophisticated joins (like creating multiple rows intentionally), I find it helpful to think of all joins a cross join (aka joining on 1=1) and then filtering down using the ON clause.  Do others think of their complicated joins in this way?
 
 # Code Quality and Modularity
-Making code modular reduces errors and improves readability and usability.  Two common ways we do that is by creating **views** and **temp tables**.  We also use **variables** so that you don't need to change strings all over your file when you update it.  We're not going to cover the basics of making views and temp tables here, but we'll mention some helpful things to know about them.
+Making code modular reduces errors and improves readability and usability.  Two common ways we do that is by creating **views** and **temp tables**.  We also use **variables** so that you don't need to change strings all over your file when you update it.  We're not going to cover the basics of making views and temp tables here, but we'll mention some helpful things to know about them.  You should probably just Google WITH if you don't know how it works, but here are some examples:
+```SQL
+CREATE view v_WithAwesomeness as
+
+with tempTable as (select * from v_main where schoolyear=2023)
+
+select distinct SchoolYear from tempTable
+--result is 2023
+
+Drop view v_WithAwesomeness
+
+
+--another example
+With UniqueOct5StudentList as (
+	select distinct studentID 
+	from enrollment 
+	where 1=1
+		And Oct5=1 
+		and currentyear=1
+)
+, --this comma lets you make more than one CTE
+attendanceCounts as (
+	Select studentID
+		,sum(present) as PresentCount
+	From attendance
+	Where 1=1
+		And currentyear=1
+		And EarlierThanOct5=1
+	Group by studentID
+)
+
+Select l.studentID
+	,a.PresentCount
+From UniqueOct5StudentList l
+Left join attendanceCounts a on a.studentID=l.studentID
+
+```
+
+## WITH
+A separate but related tool is `WITH`.  You may be using **subqueries**, but you should try to use WITH instead of a subquery. It is much neater and still works in views.  You can use them instead of temp tables as well to avoid a stored procedure if you don't want to use one. Even though they are basically the same thing as temp tables, they feel more logical (at least to Kenli).  If you find yourself repeating the same WITH clauses (also called common table expressions, or CTEs) you should make those views and then just call the view in your with clause. 
 
 ## Backwards Planning and Pseudo Code
 Start with your goal in mind.  You should know the structure of your end tables, especially the uniqueness/effective keys of the tables.  Then work back from there writing in pseudo code to think through all the tables that will go into your analysis and how you should force uniqueness at each step.  They comment all your joins as mentioned above.
@@ -120,7 +159,7 @@ Start with your goal in mind.  You should know the structure of your end tables,
     b. Write each column, command, or table on a new line. This makes it easy to read and comment out unused pieces.
     c. Use indentation to help the eye find new sections.
 5. Example:
-```
+```SQL
 SELECT column1
      , column2
 FROM Table1
